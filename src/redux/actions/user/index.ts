@@ -44,6 +44,7 @@ import * as types from '../../types';
 export type UserType = {
   name?: string;
   avatar_url?: string;
+  message: string;
 };
 
 export function getUserRequest(name: string) {
@@ -60,7 +61,7 @@ export function getUserSuccess(user: UserType) {
   };
 }
 
-export function getUserFailure(error: string) {
+export function getUserFailure(error: UserType) {
   return {
     type: types.GET_USER_FAILURE,
     payload: error

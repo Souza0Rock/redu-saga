@@ -1,26 +1,26 @@
-import { all, call, put, takeLatest } from 'redux-saga/effects'
-import { UserType, getUserFailure, getUserSuccess } from '../../actions';
-import * as types from '../../types';
+import { all, call, put, takeLatest } from "redux-saga/effects";
+import { UserType, getUserFailure, getUserSuccess } from "../../actions";
+import * as types from "../../types";
 
-let userApi: UserType
+let userApi: UserType;
 const userRequest = async (name: string) => {
-    try {
-        const request = await fetch(`https://api.github.com/users/${name}`)
-        const response = await request.json()
-        userApi = response
-        return true
-    } catch (error) {
-        return false
-    }
+  try {
+    const request = await fetch(`https://api.github.com/users/${name}`);
+    const response = await request.json();
+    userApi = response;
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
+
+export function* userData(action: { type: string; payload: string }) {
+  try {
+    yield call(userRequest, action.payload);
+    yield put(getUserSuccess(userApi));
+  } catch (error) {
+    yield put(getUserFailure(userApi));
+  }
 }
 
-export function* userData(action: { type: string, payload: string }) {
-    try {
-        yield call(userRequest, action.payload)
-        yield put(getUserSuccess(userApi))
-    } catch (error) {
-        yield put(getUserFailure("falha ao conectar"))
-    }
-}
-
-export default all([takeLatest(types.GET_USER_REQUEST, userData)])
+export default all([takeLatest(types.GET_USER_REQUEST, userData)]);
