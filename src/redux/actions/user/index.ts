@@ -60,8 +60,9 @@ export function getUserSuccess(user: UserType) {
   };
 }
 
-export function getUserFailure() {
+export function getUserFailure(error: string) {
   return {
     type: types.GET_USER_FAILURE,
+    payload: error
   };
 }
